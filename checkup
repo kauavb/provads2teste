@@ -1,0 +1,38 @@
+import java.util.Date;
+
+// Classe Checkup que estende Consulta
+public class Checkup extends Consulta {
+    // Atributo adicional para o valor dos exames
+    private double valorAdicionalExames;
+
+    // Construtor que lança a exceção ValorInvalidoException
+    public Checkup(Paciente paciente, Date dataAtendimento, String localAtendimento, double valorConsulta,
+                   double valorAdicionalExames) throws ValorInvalidoException {
+        // Chama o construtor da superclasse Consulta
+        super(paciente, dataAtendimento, localAtendimento, valorConsulta);
+
+        // Verifica se o valor adicional dos exames é válido
+        if (valorAdicionalExames < 0) {
+            throw new ValorInvalidoException("Valor adicional de exames inválido");
+        }
+
+        // Inicializa o atributo valorAdicionalExames
+        this.valorAdicionalExames = valorAdicionalExames;
+    }
+
+    // Método de acesso ao valor adicional dos exames (somente leitura)
+    public double getValorAdicionalExames() {
+        return valorAdicionalExames;
+    }
+
+    // Método polimórfico que retorna o valor total do check-up
+    @Override
+    public double getValorConsulta() {
+        // Se o paciente tem plano de saúde SenaiMed, aplica-se um desconto de 18%
+        if (getPaciente().temPlanoSaudeSenaiMed()) {
+            return super.getValorConsulta() + valorAdicionalExames * 0.82;
+        } else {
+            return super.getValorConsulta() + valorAdicionalExames;
+        }
+    }
+}
