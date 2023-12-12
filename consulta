@@ -1,0 +1,76 @@
+import java.util.Date;
+
+// Exceção personalizada para valor inválido
+class ValorInvalidoException extends Exception {
+    public ValorInvalidoException(String mensagem) {
+        super(mensagem);
+    }
+}
+
+// Classe principal Consulta
+public class Consulta {
+    // Atributos privados
+    private Paciente paciente;
+    private Date dataAtendimento;
+    private String localAtendimento;
+    private double valorConsulta;
+
+    // Construtor
+    public Consulta(Paciente paciente, Date dataAtendimento, String localAtendimento, double valorConsulta)
+            throws ValorInvalidoException {
+        // Verifica se a data é válida
+        if (dataAtendimento == null || dataAtendimento.after(new Date())) {
+            throw new IllegalArgumentException("Data de atendimento inválida");
+        }
+
+        // Verifica se o valor é válido
+        if (valorConsulta < 0) {
+            throw new ValorInvalidoException("Valor de consulta inválido");
+        }
+
+        // Inicializa os atributos
+        this.paciente = paciente;
+        this.dataAtendimento = dataAtendimento;
+        this.localAtendimento = localAtendimento;
+        this.valorConsulta = valorConsulta;
+    }
+
+    // Métodos de acesso (somente leitura)
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public Date getDataAtendimento() {
+        return dataAtendimento;
+    }
+
+    public String getLocalAtendimento() {
+        return localAtendimento;
+    }
+
+    // Método de acesso ao valor (somente leitura)
+    protected double getValorConsulta() {
+        return valorConsulta;
+    }
+
+    // Método para exibir informações da consulta
+    public void exibirInformacoes() {
+        System.out.println("Paciente: " + paciente.getNome());
+        System.out.println("Data de Atendimento: " + dataAtendimento);
+        System.out.println("Local de Atendimento: " + localAtendimento);
+        System.out.println("Valor da Consulta: " + valorConsulta);
+    }
+}
+
+// Classe Paciente (exemplo)
+class Paciente {
+    private String nome;
+
+    public Paciente(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+}
