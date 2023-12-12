@@ -1,0 +1,67 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+// Exceção customizada para data de nascimento inválida
+class ValorInvalidoException extends Exception {
+    public ValorInvalidoException(String mensagem) {
+        super(mensagem);
+    }
+}
+
+// Classe Paciente
+public class Paciente {
+
+    // Atributos privados
+    private String cpf;
+    private String nome;
+    private Date dataNascimento;
+    private String planoSaude;
+
+    // Construtor que lança exceção para data de nascimento inválida
+    public Paciente(String cpf, String nome, String dataNascimento, String planoSaude) throws ValorInvalidoException {
+        this.cpf = cpf;
+        this.nome = nome;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            this.dataNascimento = sdf.parse(dataNascimento);
+        } catch (ParseException e) {
+            throw new ValorInvalidoException("Data de nascimento inválida. Formato esperado: dd/MM/yyyy");
+        }
+        this.planoSaude = planoSaude;
+    }
+
+    // Métodos para consultar informações (getters)
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDataNascimento() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(dataNascimento);
+    }
+
+    public String getPlanoSaude() {
+        return planoSaude;
+    }
+
+    // Exemplo de uso
+    public static void main(String[] args) {
+        try {
+            // Criando um paciente com dados válidos
+            Paciente paciente = new Paciente("12345678901", "Fulano", "01/01/2000", "Plano A");
+
+            // Exibindo informações do paciente
+            System.out.println("CPF: " + paciente.getCpf());
+            System.out.println("Nome: " + paciente.getNome());
+            System.out.println("Data de Nascimento: " + paciente.getDataNascimento());
+            System.out.println("Plano de Saúde: " + paciente.getPlanoSaude());
+        } catch (ValorInvalidoException e) {
+            System.out.println("Erro ao criar o paciente: " + e.getMessage());
+        }
+    }
+}
